@@ -14,6 +14,7 @@ stages:
   - job: BuildJob
     displayName: 'Build and Test'
     pool:
+      name: 'Lab6_FinalPresentationWork_AgentPool'
       vmImage: 'ubuntu-latest'
     steps:
     - task: NodeTool@0
@@ -39,6 +40,7 @@ stages:
   - job: DeployJob
     displayName: 'Deploy Artifact'
     pool:
+      name: 'Lab6_FinalPresentationWork_AgentPool'
       vmImage: 'ubuntu-latest'
     steps:
     - script: |
@@ -56,6 +58,7 @@ stages:
   - job: DeployDevJob
     displayName: 'Deploy to Development Environment'
     pool:
+      name: 'Lab6_FinalPresentationWork_AgentPool'
       vmImage: 'ubuntu-latest'
     steps:
     - script: |
@@ -70,6 +73,7 @@ stages:
   - job: DeployQATJob
     displayName: 'Deploy to QAT Environment'
     pool:
+      name: 'Lab6_FinalPresentationWork_AgentPool'
       vmImage: 'ubuntu-latest'
     steps:
     - script: |
@@ -84,6 +88,7 @@ stages:
   - job: DeployStagingJob
     displayName: 'Deploy to Staging Environment'
     pool:
+      name: 'Lab6_FinalPresentationWork_AgentPool'
       vmImage: 'ubuntu-latest'
     steps:
     - script: |
@@ -98,6 +103,7 @@ stages:
   - job: DeployProdJob
     displayName: 'Deploy to Production Environment'
     pool:
+      name: 'Lab6_FinalPresentationWork_AgentPool'
       vmImage: 'ubuntu-latest'
     steps:
     - script: |

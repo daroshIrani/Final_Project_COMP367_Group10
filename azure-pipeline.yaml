@@ -1,0 +1,106 @@
+# azure-pipeline.yaml
+
+# Trigger the pipeline on changes to the main branch
+trigger:
+  branches:
+    include:
+    - main
+
+# CI Stage (Build Stage)
+stages:
+- stage: Build
+  displayName: 'Build Stage'
+  jobs:
+  - job: BuildJob
+    displayName: 'Build and Test'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: NodeTool@0
+      displayName: 'Install Node.js'
+      inputs:
+        versionSpec: '20.12.1'  
+    
+    - script: |
+        # Install project dependencies
+        npm install
+      displayName: 'Install dependencies'
+    
+    - script: |
+        # Run unit tests
+        npm test
+      displayName: 'Run tests'
+
+# CD Stage (Deliver Stage)
+- stage: Deliver
+  displayName: 'Deliver Stage'
+  dependsOn: Build
+  jobs:
+  - job: DeployJob
+    displayName: 'Deploy Artifact'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: |
+        # Build and deploy the project
+        npm run build
+        
+        echo 'Deploying the application...'
+      displayName: 'Build and Deploy'
+
+# Deployment to Environments
+- stage: DeployDev
+  displayName: 'Deploy to Dev Env'
+  dependsOn: Deliver
+  jobs:
+  - job: DeployDevJob
+    displayName: 'Deploy to Development Environment'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: |
+        
+        echo 'Deploying to Development Environment'
+      displayName: 'Deploy to Development Environment'
+  
+- stage: DeployQAT
+  displayName: 'Deploy to QAT Env'
+  dependsOn: DeployDev
+  jobs:
+  - job: DeployQATJob
+    displayName: 'Deploy to QAT Environment'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: |
+        
+        echo 'Deploying to QAT Environment'
+      displayName: 'Deploy to QAT Environment'
+  
+- stage: DeployStaging
+  displayName: 'Deploy to Staging Env'
+  dependsOn: DeployQAT
+  jobs:
+  - job: DeployStagingJob
+    displayName: 'Deploy to Staging Environment'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: |
+        
+        echo 'Deploying to Staging Environment'
+      displayName: 'Deploy to Staging Environment'
+  
+- stage: DeployProd
+  displayName: 'Deploy to Production Env'
+  dependsOn: DeployStaging
+  jobs:
+  - job: DeployProdJob
+    displayName: 'Deploy to Production Environment'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: |
+       
+        echo 'Deploying to Production Environment'
+      displayName: 'Deploy to Production Environment'

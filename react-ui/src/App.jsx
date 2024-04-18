@@ -2,26 +2,60 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import './App.css';
+//import DataEntryForm from './components/DataEntryForm';
+import PostForm from './components/Post-Form';
+import Results from './components/Results';
 
 function App() {
+  
   const [data, setData] = useState({});
+
   const [showLoading, setShowLoading] = useState(true);
+
+  const [predictionResults, setPredictionResults] = useState(null);
+
   const apiUrl = "api/run";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setShowLoading(true);
         const result = await axios.get(apiUrl);
         console.log('result.data:', result.data);
         setData(result.data);
         setShowLoading(false);
       } catch (error) {
         console.log('error in fetchData:', error);
+        setShowLoading(false);
       }
     };
 
     fetchData();
   }, []);
+
+  // const handleSubmit = async (formData) => {
+  //   try {
+  //     setShowLoading(true);
+  //     const result = await axios.post('/api/run', { params: formData });
+  //     setData(result.data);
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   } finally {
+  //     setShowLoading(false);
+  //   }
+  // };
+
+  const handleFormSubmit = async (formData) => {
+    try {
+      setShowLoading(true);
+      const response = await axios.post('/api/run', formData);
+      setPredictionResults(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setShowLoading(false);
+    }
+  };
 
   // Function to determine species based on values
   const determineSpecies = (values) => {
@@ -41,7 +75,8 @@ function App() {
     <div>
       {showLoading === false ? (
         <div>
-          {showLoading && (
+
+           {showLoading && (
             <Spinner animation="border" role="status">
               <span className="sr-only">Loading...</span>
             </Spinner>
@@ -90,13 +125,19 @@ function App() {
             </tbody>
           </table>
 
+          
+ 
+          {predictionResults && <Results data={predictionResults} />}
+
           {/* Table for Species Values */}
           <h2>Definition of Values for Species</h2>
           <table className="App-table">
             <thead>
+
               <tr>
                 <th className="App-th">Species</th>
                 <th className="App-th">Values</th>
+                
               </tr>
             </thead>
 
@@ -112,21 +153,37 @@ function App() {
               <tr>
                 <td className="App-td">versicolor</td>
                 <td className="App-td">0, 0, 1</td>
+
+
               </tr>
+
+
             </tbody>
           </table>
-        </div>
-      ) : (
-        <div>
-          {showLoading && (
-            <Spinner animation="border" role="status">
-              <span className="sr-only">Waiting for results...</span>
-            </Spinner>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
+            
+          </div>
+
+          ) : (
+            <div>
+              {showLoading && (
+                <Spinner animation="border" role="status">
+                  <span className="sr-only">Waiting for results...</span>
+                </Spinner>
+
+
+
+              )}
+            </div>
+        )}
+        <PostForm onFormSubmit={handleFormSubmit} />
+
+</div>
+
+
+
+
+
+)}
 
 export default App;
+

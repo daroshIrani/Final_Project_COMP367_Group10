@@ -27,6 +27,11 @@ stages:
         # Install project dependencies
         npm install
       displayName: 'Install dependencies'
+
+    - script: |
+        # Update Project Dependencies
+        npm update
+      displayName: 'Update Dependencies'
     
     - script: |
         # Run unit tests

@@ -17,6 +17,7 @@ stages:
     pool:
       name: 'Lab6_FinalPresentationWork_AgentPool'
       vmImage: 'ubuntu-latest'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/server'
     steps:
     - task: NodeTool@0
       displayName: 'Install Node.js'

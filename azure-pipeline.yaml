@@ -49,9 +49,7 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - script: |
-        # Build and deploy the project
-        npm run build
-        
+    
         echo 'Deploying the application...'
       displayName: 'Build and Deploy'
 

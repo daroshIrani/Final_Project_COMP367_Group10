@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import './App.css';
-//import DataEntryForm from './components/DataEntryForm';
+
 import PostForm from './components/Post-Form';
 import Results from './components/Results';
 
@@ -33,17 +33,6 @@ function App() {
     fetchData();
   }, []);
 
-  // const handleSubmit = async (formData) => {
-  //   try {
-  //     setShowLoading(true);
-  //     const result = await axios.post('/api/run', { params: formData });
-  //     setData(result.data);
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   } finally {
-  //     setShowLoading(false);
-  //   }
-  // };
 
   const handleFormSubmit = async (formData) => {
     try {
@@ -169,20 +158,12 @@ function App() {
                 <Spinner animation="border" role="status">
                   <span className="sr-only">Waiting for results...</span>
                 </Spinner>
-
-
-
               )}
             </div>
         )}
         <PostForm onFormSubmit={handleFormSubmit} />
 
 </div>
-
-
-
-
-
 )}
 
 export default App;

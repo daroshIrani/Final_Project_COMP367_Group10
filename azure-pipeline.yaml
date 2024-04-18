@@ -17,7 +17,7 @@ stages:
     pool:
       name: 'Lab6_FinalPresentationWork_AgentPool'
       vmImage: 'ubuntu-latest'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/server'
+      
     steps:
     - task: NodeTool@0
       displayName: 'Install Node.js'
@@ -25,19 +25,17 @@ stages:
         versionSpec: '20.12.1'  
     
     - script: |
-        # Install project dependencies
+        # Install dependencies for server
         npm install
-      displayName: 'Install dependencies'
-
-    - script: |
         # Update Project Dependencies
         npm update
-      displayName: 'Update Dependencies'
-    
-    - script: |
+        # Build server
+        npm run build
         # Run unit tests
         npm test
-      displayName: 'Run tests'
+      displayName: 'Build Server'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/server'
+
 
 # CD Stage (Deliver Stage)
 - stage: Deliver
